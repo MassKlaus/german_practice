@@ -14,7 +14,7 @@ const config = {
 		// See https://kit.svelte.dev/docs/adapters for more information about adapters.
 		adapter: adapter({
 			// See below for an explanation of these options
-			runtime: 'node16.x',
+			runtime: 'node16js.x',
 		})
 	}
 };
