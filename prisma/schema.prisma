@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+
+// table to symbolise meaning of word so we can link multiple words to one meaning, abstracted away from language
+model Meaning {
+  id          Int           @id @default(autoincrement())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  deletedAt   DateTime?
+  Word        Word[]
+}
+
+
+model Language {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+  Words     Word[]
+}
+
+// Words table
+model Word {
+  id          Int           @id @default(autoincrement())
+  text        String        @unique
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  deletedAt   DateTime?
+  language    Language      @relation(fields: [languageId], references: [id])
+  languageId  Int
+  meaning     Meaning       @relation(fields: [meaningId], references: [id])
+  meaningId   Int
+
+  @@index([languageId])
+  @@index([meaningId])
+}
+
+// relation table to translation of words
+// to find other language words that mean the same thing, we just fetch according to meaning and make sure the language is not the same
+
+
+// WIP - Adding example and exercice tables later
